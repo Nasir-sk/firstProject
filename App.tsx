@@ -1,45 +1,26 @@
-import React from "react";
-import {
-  Button,
-  Text,
-  View,
-} from 'react-native';
-import CompanyData from "./components/CompanyData";
-let age = 3;
-var email = "abc@test.com";
+import React, { useState } from 'react';
+import { Button, Text, View } from 'react-native';
 
-// function fruit(){
-//   return "apple"
-// }
+const App =()=>{
+  let name = "Naser Shaikh";
+  const [fname, setFname] = useState('Johny')
 
-
-
-const App = ()=>{
-  const fruit = (val:any) =>{
-    console.warn(val);
-  }
-  const name = "Naser"
   return(
     <View>
-      <Text style={{fontSize:30}}>{name}</Text>
-      {/* <Text style={{fontSize:30}}>{fruit()}</Text> */}
-      <Text style={{fontSize:30}}>{email}</Text>
-      <Button title="Press "></Button>
-      {/* <Button title="on press" onPress={fruit} color={'skyblue'}/> */}
-      <Button title="on press" onPress={()=>fruit("Hello Nasir")} color={'green'}/>
-      <UserData/>
-      <CompanyData/>
+      <Text style={{fontSize: 30}}>Props in React  js</Text>
+      <User name={name} fname={fname} age={60}/>
+      <Button title='update Props' onPress={()=>setFname('Depp')}/>
     </View>
   )
 }
 
-const UserData=()=>{
+const  User =(props:any)=>{
   return(
-    <View>
-      <Text style={{fontSize:30}}>Name : Naser</Text>
-      <Text style={{fontSize:30}}> Age : 23</Text>
-      <Text style={{fontSize:30}}>Email : naser@test.com</Text>
-      <CompanyData/>
+    <View style={{backgroundColor:'black', padding:5}}>
+      <Text style={{color:'white'}}>{props.name}</Text>
+      <Text style={{color:'white'}}>{props.fname}</Text>
+      <Text style={{color:'white'}}>{props.age}</Text>
+      
     </View>
   )
 }
