@@ -1,18 +1,25 @@
-import React, { useEffect, useState }  from 'react';
-import { View, Text , SectionList, Button } from 'react-native';
+import React, {  useState }  from 'react';
+import { View, Text , Button } from 'react-native';
 const App =()=>{
-  const [count, setCount] = useState(0);
+  const [show, setShow] = useState(true);
 
-  useEffect(()=>{
-    console.warn(count)
-  },[count])
   return(
     <View>
-     <Text style={{fontSize: 30}}>Life cycle with useEffect{count}</Text>
-     <Button title='update count' onPress={()=>setCount(count+1)}/>
+     <Text> Hide and Show component</Text>
+     <Button title='Show' onPress={()=>setShow(!show)}/>
+     {
+      show ? <User/> : null
+     }
     </View>
   )
 }
 
+const User=()=>{
+  return(
+    <View>
+      <Text>User Component</Text>
+    </View>
+  )
+}
 //componentDidMount for a specific component execute
 export default App;
