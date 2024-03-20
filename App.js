@@ -1,37 +1,32 @@
 import React, { useEffect, useState }  from 'react';
 import { View, Text , Button } from 'react-native';
 const App =()=>{
-  const [count, setCount] = useState(0);
-  const [data, setData] = useState(100);
-
-  useEffect(()=>{
-    console.warn('do some animation')
-  }, [count]);
-  
-  useEffect(()=>{
-    console.warn('call some api here')
-  }, [data]);
-  
+  const [show, setShow] = useState(true);
 
   return(
     <View>
-     <Text>ComponentDidMount</Text>
-     <Button title='update count' onPress={()=>setCount(count+1)}/>
-     <Button title='update data' onPress={()=>setData(data+1)}/>
-     <User info={{count, data}}/>
+     <Text>useEffect for unMount Component</Text>
+     <Button title='Hide and Show' onPress={()=>setShow(!show)}/>
+    {
+      show ?
+      <User/>: null
+     }
      
     </View>
   )
 }
 
 const User=(props)=>{
-  console.warn(props.info);
+  const timer = setInterval(()=>{
+    console.warn("Timer called");
+  }, 2000)
+
   useEffect(()=>{
-    console.warn("run this code when prop is updated");
-  },[props.info.count, props.info.data])
+    return ()=> clearInterval(timer)
+  })
   return(
     <View>
-      <Text>User Component {props.info.count}</Text>
+      <Text>User Component</Text>
     </View>
   )
 }
