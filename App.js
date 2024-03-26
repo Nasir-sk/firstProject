@@ -6,9 +6,29 @@ const Stack = createNativeStackNavigator();
 const App =()=>{
   return(
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle:{
+            backgroundColor:'blue',
+          },
+          headerTintColor:'orange',
+          headerTitleStyle:{
+            fontSize:25
+          }
+        }}
+      >
+
         <Stack.Screen name='Login' component={Login}/>
-        <Stack.Screen name='Home' component={Home}/>
+        <Stack.Screen name='Home' component={Home}
+        options={{
+          headerStyle:{
+            backgroundColor:'skyblue',
+          },
+          headerTintColor:'#000',
+          headerTitleStyle:{
+            fontSize:25
+          }
+        }}/>
       </Stack.Navigator>
     </NavigationContainer>
     )
