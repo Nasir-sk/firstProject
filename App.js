@@ -1,42 +1,41 @@
-import React, { useState } from 'react';
-import {   Button, StyleSheet, View, Text  } from 'react-native';
+import React from 'react';
+import {   View, Text, StyleSheet, Button  } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator();
 const App =()=>{
- const [show, setShow] = useState(false);
+  return(
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Login' component={Login}/>
+        <Stack.Screen name='Home' component={Home}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+    )
+}
+
+const Login =(props)=>{
   return(
     <View style={styles.container}>
-      {
-        show?
-        <View style={styles.modal}>
-          <View style={styles.body}>
-            <Text>Some Text</Text>
-            <Button title='close' onPress={()=>setShow(false)}/>
-          </View>
-        </View>
-        :null
-      }
-     <Button title='Open Dialog' onPress={()=>setShow(true)}/>
+      <Text style={{fontSize:30}}>Login Screen</Text>
+      <Button title='Go to Home page' onPress={()=> props.navigation.navigate("Home")}/>
+    </View>
+  )
+}
+const Home =(props)=>{
+  return(
+    <View style={styles.container}>
+      <Text style={{fontSize:30}}>Home Screen</Text>
+      <Button title='Go to Login page' onPress={()=> props.navigation.navigate("Login")}/>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container:{
-  flex:1,
-  justifyContent:'flex-end'
-  },
-  modal:{
-    flex: 1,
-    backgroundColor:'rgba(50,50,50,.5)',
-    justifyContent:'center',
+    flex:1,
+    justifyContent: 'center',
     alignItems:'center'
-  },
-  body:{
-    backgroundColor:'#fff',
-    height:300,
-    width:300,
-    padding:20,
-    justifyContent:'flex-end',
-    borderRadius:10
   }
 })
 export default App;
