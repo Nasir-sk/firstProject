@@ -1,54 +1,36 @@
 import React from 'react';
-import {   View, Text, StyleSheet, Button, TextInput  } from 'react-native';
+import {   View, Text, StyleSheet, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Login } from './components/Login';
-import { Home } from './components/Home';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const Stack = createNativeStackNavigator();
+const  Tab = createBottomTabNavigator();
 const App =()=>{
-  const btnAction=()=>{
-    console.warn("button pressed")
-  }
+ 
   return(
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle:{
-            backgroundColor:'blue',
-          },
-          headerTintColor:'orange',
-          headerTitleStyle:{
-            fontSize:25
-          }
-        }}
-      >
+      <Tab.Navigator>
 
-        <Stack.Screen name='Login' component={Login}/>
-        <Stack.Screen name='Home' component={Home}
-        options={{
-          headerTitle:()=><Button title='left'onPress={btnAction}/>,
-          headerRight:()=><Header/>,
-          headerStyle:{
-            backgroundColor:'skyblue',
-          },
-          headerTintColor:'#000',
-          headerTitleStyle:{
-            fontSize:25
-          }
-        }}/>
-      </Stack.Navigator>
+        <Tab.Screen name='Login' component={Login}/>
+        <Tab.Screen name='SignUp' component={SignUp}/>
+      </Tab.Navigator>
     </NavigationContainer>
     )
 }
 
 
-
-
-const Header=()=>{
+const SignUp=()=>{
   return(
-    <View>
-      <TextInput>Enter name</TextInput>
+    <View style={{flex:1, justifyContent:'center', alignItems:"center"}}>
+      <Text style={{fontSize:30}}>SignUp</Text>
+    </View>
+  )
+}
+
+
+const Login=()=>{
+  return(
+    <View style={{flex:1, justifyContent:'center', alignItems:"center"}}>
+      <Text style={{fontSize:30}}>Login</Text>
     </View>
   )
 }
