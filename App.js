@@ -1,71 +1,67 @@
-import React, {  useState } from 'react';
-import {   View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React, {  useEffect, useState } from 'react';
+import {   View, Text,  Button, StyleSheet } from 'react-native';
 
 const App =()=>{
- const [name, setName] = useState('');
- const [email, setEmail] = useState('');
- const [age, setAge] = useState(0);
+ const [data, setData]=useState([])
 
- const [nameErr, setNameErr] = useState(false);
- const [emailErr, setEmailErr] = useState(false);
- const [ageErr, setAgeErr] = useState(false);
-
- saveData = async () =>{
-
-  if(!name){
-    setNameErr(true);
-  }else{
-    setNameErr(false)
-  }
-  if(!email){
-    setEmailErr(true);
-  }else{
-    setEmailErr(false)
-  }
-  if(!age){
-    setAgeErr(true);
-  }else{
-    setAgeErr(false)
-  }
-
-  if(!name || !email || !age){
-    return false;
-  }
+ const getAPIData = async ()=>{
   const url = "http://10.0.2.2:3000/users";
-  let result = await fetch(url,{
-    method: "Post",
-    body: JSON.stringify({name, email, age}),
-    headers:{ "Content-Type":"application/json"}
-  })
+  let result = await fetch(url);
   result = await result.json();
-  console.warn(result);
+  if(result){
+    setData(result)
+  }
  }
-
+useEffect(()=>{
+  getAPIData();
+},[])
   return(
-    <View>
-     <TextInput style={Styles.input} value={name} onChangeText={(text)=>setName(text)} placeholder='Enter Name'/>
-     { nameErr ? <Text style={Styles.inputErr}>Please enter valid name</Text> : null}
-     <TextInput style={Styles.input} value={email} onChangeText={(text)=>setEmail(text)} placeholder='Enter Email'/>
-     { emailErr ? <Text style={Styles.inputErr}>Please enter valid email</Text> : null}
-     <TextInput style={Styles.input} value={age} onChangeText={(text)=>setAge(text)} placeholder='Enter Age'/>
-     { ageErr ? <Text style={Styles.inputErr}>Please enter valid age</Text> : null}
-     <Button title='save data' onPress={saveData}/>
+    <View style={styles.container}>
+      <View style={styles.dataWrapper}> 
+      <View style={{flex: 1}}>
+        <Text>Name</Text>
+        </View>
+        <View style={{flex: 2}}>
+        <Text>Age</Text>
+        </View>
+        <View style={{flex: 1}}>
+        <Text>Operation</Text>
+        </View>
+        </View>
+        {
+          data.length?
+          data.map((item)=><View style={styles.dataWrapper}>
+            <View style={{flex: 1}}>
+              <Text>{item.name}</Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text>{item.age}</Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Button title='delete'/>
+            </View>
+            <View style={{flex: 1}}>
+              <Button title='update'/>
+            </View>
+            
+          </View>)
+          :null
+        }
+    
     </View>
     )
 }
 
-const Styles = StyleSheet.create({
-  input:{
-    borderColor:"blue",
-    borderWidth:1,
-    margin:4,
-    borderRadius:4,
-    textAlign: "justify"
+const styles = StyleSheet.create({
+  container:{
+    flex:1
   },
-  inputErr:{
-    margin: 3,
-    color: "red",
-    marginLeft: 6
+  dataWrapper:{
+    flexDirection:"row",
+    justifyContent:"space-around",
+    backgroundColor:"orange",
+    margin:5,
+    padding: 8
   }
 })
 
