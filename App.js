@@ -12,6 +12,18 @@ const App =()=>{
     setData(result)
   }
  }
+
+ const deleteAPI = async (id)=>{
+  const url = "http://10.0.2.2:3000/users";
+  let result = await fetch(`${url}/${id}`,{
+    method:"delete"
+  })
+  result = await result.json();
+  if(result){
+    console.warn("User Deleted");
+    getAPIData();
+  }
+ }
 useEffect(()=>{
   getAPIData();
 },[])
@@ -38,7 +50,7 @@ useEffect(()=>{
               <Text>{item.age}</Text>
             </View>
             <View style={{flex: 1}}>
-              <Button title='delete'/>
+              <Button title='delete' onPress={()=>deleteAPI(item.id)}/>
             </View>
             <View style={{flex: 1}}>
               <Button title='update'/>
