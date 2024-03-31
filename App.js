@@ -66,7 +66,7 @@ const  updateUser =(data)=>{
           :null
         }
         <Modal visible={showModal} transparent={true}>
-         <UserModal setShowModal={setShowModal} selectedUser={selectedUser}/>
+         <UserModal setShowModal={setShowModal} selectedUser={selectedUser} getAPIData={getAPIData}/>
         </Modal>
     
     </View>
@@ -88,13 +88,29 @@ const UserModal =(props)=>{
     }
   },[props.selectedUser])
   
+  const updateUser= async()=>{
+    console.warn(name,Email,age, props.selectedUser.id);
+    const url = "http://10.0.2.2:3000/users";
+    const id =props.selectedUser.id;
+    let result = await fetch(`${url}/${id}`,{
+      method:"PUT",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name,age,Email})
+    })
+    result = await result.json();
+    if(result){
+      console.warn(result);
+      props.getAPIData();
+      props.setShowModal(false)
+    }
+  }
   return(
     <View style={styles.centeredView}>
     <View style={styles.modalView}>
-      <TextInput style={styles.input} value={name}/>
-      <TextInput style={styles.input} value={age}/>
-      <TextInput style={styles.input} value={Email}/>
-      <View style={{marginBottom:15 }}><Button title='update'/></View>
+      <TextInput style={styles.input} value={name} onChangeText={(text)=>setName(text)}/>
+      <TextInput style={styles.input} value={age} onChangeText={(text)=>setAge(text)}/>
+      <TextInput style={styles.input} value={Email} onChangeText={(text)=>setEmail(text)}/>
+      <View style={{marginBottom:15 }}><Button title='update' onPress={updateUser}/></View>
       <Button title='Close' onPress={()=>props.setShowModal(false)}/>
     </View>
   </View>
