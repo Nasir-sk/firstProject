@@ -2,150 +2,33 @@ import React, {  useEffect, useState } from 'react';
 import {   View, Text,  Button, StyleSheet, Modal, TextInput } from 'react-native';
 
 const App =()=>{
- const [data, setData]=useState([])
- const [showModal, setShowModal] = useState(false);
- const [selectedUser, setSelectedUser]= useState(undefined)
- const getAPIData = async ()=>{
-  const url = "http://10.0.2.2:3000/users";
-  let result = await fetch(url);
-  result = await result.json();
-  if(result){
-    setData(result)
+  const [data, setData] = useState([]);
+  const searcUser = async (text)=>{
+      const url = `http://10.0.2.2:3000/users?q=${text}`;
+      // console.warn(url)
+      let result = await fetch(url)
+      result = await result.json();
+      if(result){
+        setData(result);
+      }
   }
- }
-
- const deleteAPI = async (id)=>{
-  const url = "http://10.0.2.2:3000/users";
-  let result = await fetch(`${url}/${id}`,{
-    method:"delete"
-  })
-  result = await result.json();
-  if(result){
-    console.warn("User Deleted");
-    getAPIData();
-  }
- }
-useEffect(()=>{
-  getAPIData();
-},[])
-
-const  updateUser =(data)=>{
-  setShowModal(true);
-  setSelectedUser(data)
-}
   return(
-    <View style={styles.container}>
-      <View style={styles.dataWrapper}> 
-      <View style={{flex: 1}}>
-        <Text>Name</Text>
-        </View>
-        <View style={{flex: 2}}>
-        <Text>Age</Text>
-        </View>
-        <View style={{flex: 1}}>
-        <Text>Operation</Text>
-        </View>
-        </View>
+    <View style={{flex:1}}>
+      <TextInput
+        style={{borderColor:"skyblue", borderWidth:1, margin: 15, fontSize:20}}
+        placeholder='search'
+        onChangeText={(text)=>searcUser(text)}
+        />
         {
           data.length?
-          data.map((item)=><View style={styles.dataWrapper}>
-            <View style={{flex: 1}}>
-              <Text>{item.name}</Text>
-            </View>
-            <View style={{flex: 1}}>
-              <Text>{item.age}</Text>
-            </View>
-            <View style={{flex: 1}}>
-              <Button title='delete' onPress={()=>deleteAPI(item.id)}/>
-            </View>
-            <View style={{flex: 1}}>
-              <Button title='update' onPress={()=>updateUser(item)}/>
-            </View>
-            
-          </View>)
-          :null
+          data.map((item)=><View style={{padding:10, flexDirection:"row", justifyContent:"space-between"}}>
+            <Text style={{fontSize: 20}}>{item.name}</Text>
+            <Text style={{fontSize: 20}}>{item.Email}</Text>
+            <Text style={{fontSize: 20}}>{item.age}</Text>
+            </View>)
+            :null
         }
-        <Modal visible={showModal} transparent={true}>
-         <UserModal setShowModal={setShowModal} selectedUser={selectedUser} getAPIData={getAPIData}/>
-        </Modal>
-    
     </View>
-    )
-}
-
-const UserModal =(props)=>{
-  console.warn(props.selectedUser);
-  const [name, setName]=useState(undefined);
-  const [age, setAge]=useState(undefined);
-  const [Email, setEmail]=useState(undefined);
-  
-  useEffect(()=>{
-    if(props.selectedUser){
-      setName(props.selectedUser.name);
-      setAge(props.selectedUser.age.toString());
-      setEmail(props.selectedUser.Email)
-
-    }
-  },[props.selectedUser])
-  
-  const updateUser= async()=>{
-    console.warn(name,Email,age, props.selectedUser.id);
-    const url = "http://10.0.2.2:3000/users";
-    const id =props.selectedUser.id;
-    let result = await fetch(`${url}/${id}`,{
-      method:"PUT",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({name,age,Email})
-    })
-    result = await result.json();
-    if(result){
-      console.warn(result);
-      props.getAPIData();
-      props.setShowModal(false)
-    }
-  }
-  return(
-    <View style={styles.centeredView}>
-    <View style={styles.modalView}>
-      <TextInput style={styles.input} value={name} onChangeText={(text)=>setName(text)}/>
-      <TextInput style={styles.input} value={age} onChangeText={(text)=>setAge(text)}/>
-      <TextInput style={styles.input} value={Email} onChangeText={(text)=>setEmail(text)}/>
-      <View style={{marginBottom:15 }}><Button title='update' onPress={updateUser}/></View>
-      <Button title='Close' onPress={()=>props.setShowModal(false)}/>
-    </View>
-  </View>
   )
 }
-const styles = StyleSheet.create({
-  container:{
-    flex:1
-  },
-  dataWrapper:{
-    flexDirection:"row",
-    justifyContent:"space-around",
-    backgroundColor:"orange",
-    margin:5,
-    padding: 8
-  },
-  centeredView:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:"center"
-  },
-  modalView:{
-    backgroundColor:"#fff",
-    padding: 40,
-    borderRadius:10,
-    shadowColor:"#000",
-    shadowOpacity:0.70,
-    elevation:5
-  },
-  input:{
-    borderWidth:1,
-    borderColor:"skyblue",
-    width:300,
-    marginBottom:15
-  }
-})
-
 export default App;
