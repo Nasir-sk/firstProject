@@ -1,34 +1,36 @@
-import React, {  useEffect, useState } from 'react';
-import {   View, Text,  Button, StyleSheet, Modal, TextInput } from 'react-native';
+import React, {  useRef} from 'react';
+import {   View, Button, StyleSheet, TextInput } from 'react-native';
 
 const App =()=>{
-  const [data, setData] = useState([]);
-  const searcUser = async (text)=>{
-      const url = `http://10.0.2.2:3000/users?q=${text}`;
-      // console.warn(url)
-      let result = await fetch(url)
-      result = await result.json();
-      if(result){
-        setData(result);
-      }
+  const input = useRef();
+
+  const updateInput=()=>{
+    console.warn("call");
+    input.current.focus(); 
+    input.current.setNativeProps({
+      fontSize: 24,
+      color: "red"
+    })
   }
   return(
-    <View style={{flex:1}}>
-      <TextInput
-        style={{borderColor:"skyblue", borderWidth:1, margin: 15, fontSize:20}}
-        placeholder='search'
-        onChangeText={(text)=>searcUser(text)}
-        />
-        {
-          data.length?
-          data.map((item)=><View style={{padding:10, flexDirection:"row", justifyContent:"space-between"}}>
-            <Text style={{fontSize: 20}}>{item.name}</Text>
-            <Text style={{fontSize: 20}}>{item.Email}</Text>
-            <Text style={{fontSize: 20}}>{item.age}</Text>
-            </View>)
-            :null
-        }
+    <View style={styles.conatiner}>
+     <TextInput ref={input} style={styles.input} placeholder='Enter name'/>
+     <TextInput style={styles.input} placeholder='Enter password'/>
+     <Button title='Update Input' onPress={updateInput}/>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  conatiner:{
+    flex:1,
+    padding:16
+  },
+  input:{
+    borderColor:'skyblue',
+    borderWidth: 2,
+    margin: 10,
+    borderRadius:5,
+  }
+})
 export default App;
