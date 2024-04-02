@@ -1,43 +1,20 @@
 import React from 'react'
 import { StyleSheet, Text, View,  ScrollView } from 'react-native'
-import Header from './components/Header'
-import Product from './components/Product'
+import { NavigationContainer} from '@react-navigation/native'
+import { createNativeStackNavigator} from '@react-navigation/native-stack'
+import ProductWrapper from './components/ProductWrapper';
+import UserList from './components/UserList';
 
+const Stack = createNativeStackNavigator();
 const App=()=>{
-  const products =[
-    {
-      name:"Samsung",
-      color:"white",
-      price:30000,
-      image:"https://m.media-amazon.com/images/I/71+0MKV37HL._AC_UF1000,1000_QL80_.jpg"
-    },{
-      name:"Apple I phone",
-      color:"black",
-      price:130000,
-      image:"https://m.media-amazon.com/images/I/71+0MKV37HL._AC_UF1000,1000_QL80_.jpg"
-    },{
-      name:"RealMe",
-      color:"blue",
-      price:11000,
-      image:"https://m.media-amazon.com/images/I/71+0MKV37HL._AC_UF1000,1000_QL80_.jpg"
-    },
-  ]
     return(
-        <View style={styles.container}>
-           <Header/>
-           <ScrollView>
-           {
-            products.map((item)=><Product item={item}/>)
-           }
-           </ScrollView>
-        </View>
+        <NavigationContainer >
+          <Stack.Navigator>
+              <Stack.Screen name='Home' component={ProductWrapper}/>
+              <Stack.Screen name='User' component={UserList}/>
+          </Stack.Navigator>
+        </NavigationContainer>
     )
 }
-
-const styles = StyleSheet.create({
-  container:{
-    flex: 1
-  }
-})
 
 export default App;
