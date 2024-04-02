@@ -3,5 +3,5 @@ import { reducer } from "./reducer";
 
 combineReducers({
     reducer,
-    // userReducer, for multiple reducers
+    //// userReducer, for multiple reducers
 })
